@@ -1,0 +1,224 @@
+#include <GL/gl.h>
+#include <GL/glut.h>
+#include <string.h>
+#include <iostream>
+
+using namespace std;
+
+float angle;
+
+GLuint	texture[1];
+
+
+void InitGL()   
+{	
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearDepth(1.0);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_DEPTH_TEST);
+    glShadeModel(GL_SMOOTH);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0f,(GLfloat)800/(GLfloat)600,0.1f,100.0f);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+GLfloat rquad;
+
+void CreateCube(float x, float y, float z, float w, float h, string color)
+{
+    glBegin(GL_QUADS);
+        if(color == "red")
+        {
+            glColor3f(1.0f, 0.0, 0.0);
+        }
+        else if(color == "black")
+        {
+            glColor3f(0.0, 0.0, 0.0);
+        }
+        else if(color == "blue")
+        {
+            glColor3f(0.0, 1.0, 0.0);
+        }
+        else if(color == "green")
+        {
+            glColor3f(0.0, 0.0, 1.0);
+        }
+        else if(color == "yellow")
+        {
+            glColor3f(1.0, 1.0, 0.0);
+        }
+        else if(color == "lightblue")
+        {
+            glColor3f(0.0, 1.0, 1.0);
+        }
+        else if(color == "purple")
+        {
+            glColor3f(1.0, 0.0, 1.0);
+        }
+        else if(color == "white")
+        {
+            glColor3f(1.0, 1.0, 1.0);
+        }
+        float px, py, pz, pw, ph;
+        px = x;
+        py = y;
+        pz = z;
+
+        glVertex3f(px, py, pz);
+        glVertex3f(px,  py + h,  pz);
+        glVertex3f(px + w,  py + h,  pz);
+        glVertex3f(px + w,  py,  pz);
+
+        glVertex3f(px, py, pz + w);
+        glVertex3f(px, py + h, pz + w);
+        glVertex3f(px, py + h, pz);
+        glVertex3f(px, py, pz);
+
+        glVertex3f(px, py, pz);
+        glVertex3f(px, py, pz + w);
+        glVertex3f(px + w, py, pz + w);
+        glVertex3f(px + w, py, pz);
+
+        glVertex3f(px, py, pz + w);
+        glVertex3f(px, py + h, pz + w);
+        glVertex3f(px + w, py + h, pz + w);
+        glVertex3f(px + w, py, pz + w);
+
+        glVertex3f(px, py + h, pz);
+        glVertex3f(px, py + h, pz + w);
+        glVertex3f(px + w, py + h, pz + w);
+        glVertex3f(px + w, py + h, pz);
+
+        glVertex3f(px + w, py, pz);
+        glVertex3f(px + w, py + h, pz);
+        glVertex3f(px + w, py + h, pz + w);
+        glVertex3f(px + w, py, pz + w);
+
+
+
+    glEnd();
+}
+
+void CreatePiramyde(float x, float y, float z, float w, float h, string color)
+{
+    if(color == "red")
+    {
+        glColor3f(1.0f, 0.0, 0.0);
+    }
+    else if(color == "black")
+    {
+        glColor3f(0.0, 0.0, 0.0);
+    }
+    else if(color == "blue")
+    {
+        glColor3f(0.0, 1.0, 0.0);
+    }
+    else if(color == "green")
+    {
+        glColor3f(0.0, 0.0, 1.0);
+    }
+    else if(color == "yellow")
+    {
+        glColor3f(1.0, 1.0, 0.0);
+    }
+    else if(color == "lightblue")
+    {
+        glColor3f(0.0, 1.0, 1.0);
+    }
+    else if(color == "purple")
+    {
+        glColor3f(1.0, 0.0, 1.0);
+    }
+    else if(color == "white")
+    {
+        glColor3f(1.0, 1.0, 1.0);
+    }
+    float px, py, pz;
+    px = x;
+    py = y;
+    pz = z;
+    glBegin(GL_TRIANGLES);
+        glVertex3f(px, py, pz);
+        glVertex3f(px+w/2, py + h, pz+w/2);
+        glVertex3f(px + w, py, pz);
+
+        glVertex3f(px, py, pz);
+        glVertex3f(px+w/2, py + h, pz+w/2);
+        glVertex3f(px, py, pz+w);
+
+        glVertex3f(px + w, py, pz);
+        glVertex3f(px+w/2, py + h, pz+w/2);
+        glVertex3f(px + w, py, pz+w);
+
+        glVertex3f(px, py, pz+w);
+        glVertex3f(px+w/2, py + h, pz+w/2);
+        glVertex3f(px+w, py, pz+w);
+    glEnd();
+}
+
+void CreateShpere(float x, float y, float z)
+{
+    float px, py, pz;
+    px = x;
+    py = y;
+    pz = z;
+    glColor3f(1.0, 1.0, 1.0);
+    glBegin(GL_POINT_BIT);
+        for(int i = 0; i < 10; i++)
+        {
+            glVertex3f(px, py, pz);
+            py += 0.1;
+        }
+    glEnd();
+}
+
+void RenderScene (void)
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+
+    glTranslatef(0.0f,0.0f,-15.0f);
+    glRotatef(rquad, 1.0, 1.0, 1.0);
+
+    CreateCube(0, 0, 0, 5, 5, "red");
+
+    rquad += 0.5;
+    glutSwapBuffers();
+}
+
+void Animate()
+{
+    glutPostRedisplay();
+}
+
+void Reshape (int w, int h)
+{
+   glViewport (0, 0, (GLsizei) w, (GLsizei) h);
+   glMatrixMode (GL_PROJECTION);
+   glLoadIdentity ();
+   gluPerspective(65.0, (GLfloat) w/(GLfloat) h, 1.0, 20.0);
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
+   glTranslatef (0.0, 0.0, -5.0);
+}
+
+
+int main(int argc, char **argv) {
+
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+    glutInitWindowPosition(100, 100);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("ZXCV Engine");
+    glutDisplayFunc(RenderScene);
+    glutIdleFunc(Animate);
+    glutReshapeFunc(Reshape);
+    InitGL();
+
+    glutMainLoop();
+
+
+
+	return 1;
+}
